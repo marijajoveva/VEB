@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add or Edit Event</title>
+</head>
+<body>
+
+<h1 th:text="${event != null ? 'Edit Event' : 'Add New Event'}"></h1>
+
+<form th:action="${event!=null ? '/events/edit/' + event.getId() : '/events/add'}" method="post">
+    <input type="hidden" th:if="${event != null}" th:name="eventId" th:value="${event.id}"/>
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:value="${event != null ? event.name : ''}" required=""/>
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" name="description" th:value="${event != null ? event.description : ''}" required=""/>
+
+    <label for="popularityScore">Popularity Score:</label>
+    <input type="number" id="popularityScore" name="popularityScore" th:value="${event != null ? event.popularityScore : ''}" required=""/>
+
+    <label for="location">Location:</label>
+    <select id="location" name="locationId" required="">
+        <option value="" disabled selected>Select a location</option>
+        <option th:each="location : ${locations}"
+                th:value="${location.id}" th:text="${location.name}"
+                th:selected="${event != null && event.location.id == location.id}">Location</option>
+    </select>
+
+    <button type="submit" th:text="${event != null ? 'Save Changes' : 'Add Event'}"></button>
+</form>
+
+</body>
+</html>
